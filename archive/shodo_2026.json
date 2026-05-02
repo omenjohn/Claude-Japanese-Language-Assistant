@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "description": "Archive of completed 書道 entries. Appended to when exercises are cleared from shodo.json.",
+    "year": 2026
+  },
+  "entries": [
+    {
+      "kanji": "一",
+      "kunyomi": ["ひと"],
+      "onyomi": ["イチ", "イツ"],
+      "meaning": "one",
+      "notes": "number 1; component of many compound numbers",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-04-30",
+      "confidence": 5
+    },
+    {
+      "kanji": "二",
+      "kunyomi": ["ふた"],
+      "onyomi": ["ニ", "ジ"],
+      "meaning": "two",
+      "notes": "number 2",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-04-30",
+      "confidence": 5
+    },
+    {
+      "kanji": "三",
+      "kunyomi": ["み"],
+      "onyomi": ["サン"],
+      "meaning": "three",
+      "notes": "number 3",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-04-30",
+      "confidence": 5
+    },
+    {
+      "kanji": "四",
+      "kunyomi": ["よ", "よん"],
+      "onyomi": ["シ"],
+      "meaning": "four",
+      "notes": "number 4; two readings in common use: し and よん",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "五",
+      "kunyomi": ["いつ"],
+      "onyomi": ["ゴ"],
+      "meaning": "five",
+      "notes": "number 5",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "六",
+      "kunyomi": ["む"],
+      "onyomi": ["ロク"],
+      "meaning": "six",
+      "notes": "number 6",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "七",
+      "kunyomi": ["なな"],
+      "onyomi": ["シチ"],
+      "meaning": "seven",
+      "notes": "number 7; two readings in common use: しち and なな",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "八",
+      "kunyomi": ["や"],
+      "onyomi": ["ハチ"],
+      "meaning": "eight",
+      "notes": "number 8",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "九",
+      "kunyomi": ["ここの"],
+      "onyomi": ["ク", "キュウ"],
+      "meaning": "nine",
+      "notes": "number 9; two readings in common use: く and きゅう",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    },
+    {
+      "kanji": "十",
+      "kunyomi": ["とお"],
+      "onyomi": ["ジュウ", "ジッ"],
+      "meaning": "ten",
+      "notes": "number 10; base for teens and tens",
+      "nominated": "2026-04-30",
+      "completed": true,
+      "completed_at": "2026-05-01",
+      "confidence": 5
+    }
+  ]
+}
