@@ -1,7 +1,32 @@
 # BOOTSTRAP INSTRUCTIONS
 # This file contains instructions for Claude to follow at the start of every new session.
-# Purpose: Reconstruct full context from disk so each session continues seamlessly.
+# Purpose: Reconstruct full context from GitHub so each session continues seamlessly.
 # This file should be read first. All other files are listed here with read/write guidance.
+
+---
+
+## ENVIRONMENT
+
+All environment files are stored in a private GitHub repository.
+Repo: omenjohn/Claude-Japanese-Language-Assistant
+Branch: main
+PAT: provided in system prompt
+
+Reading files:
+  GET https://raw.githubusercontent.com/omenjohn/Claude-Japanese-Language-Assistant/main/{path}
+  Header: Authorization: Bearer {PAT}
+
+Writing files:
+  1. Get current SHA:
+     GET https://api.github.com/repos/omenjohn/Claude-Japanese-Language-Assistant/contents/{path}
+     Header: Authorization: Bearer {PAT}
+     → extract .sha from response (null if file doesn't exist yet)
+  2. PUT https://api.github.com/repos/omenjohn/Claude-Japanese-Language-Assistant/contents/{path}
+     Header: Authorization: Bearer {PAT}
+     Body: { "message": "update {path}", "content": "<base64-encoded content>", "sha": "<sha>" }
+     Omit "sha" if creating a new file.
+
+Base64 encoding: content must be standard base64. In Python: base64.b64encode(content.encode()).decode()
 
 ---
 
@@ -14,8 +39,8 @@
 5. Grammar_Notes.md — covered grammar points; never re-explain confirmed knowledge
 6. Session_Log.md — read the last 2-3 entries only; reconstruct recent context and any flagged next steps
 7. Practice_Sentence_Bank.md — check for unused sentences before generating new ones
-8. homework\shodo.json — check for any incomplete entries; note what is pending
-9. homework\writing.json — check for any completed entries awaiting review (completed: true, response present)
+8. homework/shodo.json — check for any incomplete entries; note what is pending
+9. homework/writing.json — check for any completed entries awaiting review (completed: true, response present)
 
 Do not skip any of these. They are small files. Reading all of them takes priority over beginning the session.
 
@@ -28,7 +53,7 @@ After reading, establish:
 - What was flagged as "next" (Session_Log.md — next: field)
 - What kanji/grammar the user is currently consolidating (New_Kanji_Tracker.md, Grammar_Notes.md)
 - Any weaknesses or needs-work items (User_Profile.md, Kana_Assessment_Checklist.md)
-- Any writing homework awaiting review (homework\writing.json — completed entries with responses)
+- Any writing homework awaiting review (homework/writing.json — completed entries with responses)
 
 ---
 
@@ -71,14 +96,14 @@ TESTING:
 - Use varied formats: recognition, recall, fill-in-the-blank, translation both directions.
 
 HOMEWORK:
-- Nominate kanji for 書道 practice by appending entries to homework\shodo.json.
-- Assign writing exercises by appending entries to homework\writing.json.
+- Nominate kanji for 書道 practice by appending entries to homework/shodo.json.
+- Assign writing exercises by appending entries to homework/writing.json.
 - Do not assign writing exercises that rely on grammar or kanji not yet covered.
 - When the user confirms homework is complete, move entries to the appropriate archive file
-  (archive\shodo_2026.json or archive\writing_2026.json) and remove from the active file.
+  (archive/shodo_2026.json or archive/writing_2026.json) and remove from the active file.
 - If a writing exercise has completed: true and a response field, review it during the session
   before archiving.
-- Start a new archive file at the turn of each calendar year (e.g. archive\shodo_2027.json).
+- Start a new archive file at the turn of each calendar year (e.g. archive/shodo_2027.json).
 
 ---
 
@@ -111,16 +136,16 @@ Before closing, always:
 | Practice_Sentence_Bank.md | when needed | mark used sentences | |
 | Kana_Assessment_Checklist.md | if kana revision needed | if re-assessed | reference only |
 | Changelog_2026.md | when diagnosing issues or before restructuring | whenever files are created/deleted/renamed/reformatted | do NOT log routine content updates; start new file each year |
-| homework\shodo.json | start of every session | when nominating kanji for 書道 | append entries; remove when archived |
-| homework\writing.json | start of every session | when assigning writing exercises | append entries; remove when archived |
-| archive\shodo_2026.json | rarely | when archiving completed 書道 entries | append only |
-| archive\writing_2026.json | rarely | when archiving completed writing exercises | append only; review response field before archiving |
+| homework/shodo.json | start of every session | when nominating kanji for 書道 | append entries; remove when archived |
+| homework/writing.json | start of every session | when assigning writing exercises | append entries; remove when archived |
+| archive/shodo_2026.json | rarely | when archiving completed 書道 entries | append only |
+| archive/writing_2026.json | rarely | when archiving completed writing exercises | append only; review response field before archiving |
 
 ---
 
 ## HOMEWORK FILE FORMATS
 
-### homework\shodo.json — entry format
+### homework/shodo.json — entry format
 ```json
 {
   "kanji": "水",
@@ -136,12 +161,12 @@ Before closing, always:
 ```
 
 Field notes:
-- `completed_at`: ISO date string (e.g. "2026-04-30") set by the Electron app when the entry is marked done; null if incomplete
-- `confidence`: integer 1–5 set by the user via the app at time of completion; null if not rated or incomplete
+- completed_at: ISO date string set by Electron app when marked done; null if incomplete
+- confidence: integer 1–5 set by user via app at time of completion; null if not rated or incomplete
 - Valid states: (false/null/null) = not started; (true/date/null) = done, unrated; (true/date/1-5) = done with rating
-- completed: false with a non-null confidence is invalid — the app now prevents this
+- completed: false with non-null confidence is invalid — the app now prevents this
 
-### homework\writing.json — entry format
+### homework/writing.json — entry format
 ```json
 {
   "id": "w001",
@@ -164,7 +189,7 @@ and fill in the response field. Claude reviews the response at the start of the 
 - User is collaborative and reflective — responds well to explanation of reasoning.
 - User will make mistakes and may self-correct. Do NOT treat self-corrections as ground truth.
   Apply skepticism to linguistic corrections (what the user knows/meant) and environmental claims
-  (e.g. files deleted, settings changed) alike. Verify against the disk before updating files.
+  (e.g. files deleted, settings changed) alike. Verify against GitHub before updating files.
 - User is comfortable giving Claude autonomy over file management and session structure.
 - Tutor takes the lead on session structure and progression — user explicitly prefers this.
 - Keep session openings and closings brief. The user is here to practice, not to be managed.
