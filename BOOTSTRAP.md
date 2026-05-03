@@ -7,26 +7,29 @@
 
 ## ENVIRONMENT
 
-All environment files are stored in a private GitHub repository.
+All environment files are stored in a public GitHub repository.
 Repo: omenjohn/Claude-Japanese-Language-Assistant
 Branch: main
-PAT: provided in system prompt
 
-Reading files:
+Reading files (no auth required):
   GET https://raw.githubusercontent.com/omenjohn/Claude-Japanese-Language-Assistant/main/{path}
-  Header: Authorization: Bearer {PAT}
 
-Writing files:
+Writing files (PAT required — provided in system prompt):
   1. Get current SHA:
      GET https://api.github.com/repos/omenjohn/Claude-Japanese-Language-Assistant/contents/{path}
      Header: Authorization: Bearer {PAT}
-     → extract .sha from response (null if file doesn't exist yet)
+     → extract .sha from response (omit sha field entirely if file doesn't exist yet)
   2. PUT https://api.github.com/repos/omenjohn/Claude-Japanese-Language-Assistant/contents/{path}
      Header: Authorization: Bearer {PAT}
-     Body: { "message": "update {path}", "content": "<base64-encoded content>", "sha": "<sha>" }
-     Omit "sha" if creating a new file.
+     Content-Type: application/json
+     Body: { "message": "update {path}", "content": "<base64>", "sha": "<sha>" }
 
-Base64 encoding: content must be standard base64. In Python: base64.b64encode(content.encode()).decode()
+Base64 encoding: standard base64 of UTF-8 bytes.
+
+Note: Claude's web_fetch tool cannot attach headers, so writes cannot be performed directly.
+All writes must go through the GitHub File Writer artifact (github_writer.html), which runs in
+the user's browser and can attach auth headers. At end of session, Claude provides updated file
+content; user pastes into the writer and pushes.
 
 ---
 
@@ -110,16 +113,19 @@ HOMEWORK:
 ## STEP 5 — END OF SESSION
 
 Before closing, always:
-1. Append a new entry to Session_Log.md with:
+1. Provide updated content for any modified files so the user can push them via the GitHub
+   File Writer artifact (github_writer.html).
+2. List which files changed and what was updated in each.
+3. If new kanji were confirmed known mid-session, ensure Known_Kanji.md content reflects this.
+4. If User_Profile.md needs updating (new goals, pace observations, etc.), include it.
+5. If homework was assigned, include updated homework/shodo.json or homework/writing.json.
+6. Always include an updated Session_Log.md with a new entry containing:
    - date
    - activity
    - result/accuracy
    - notes (errors, patterns, observations)
    - next: (what to do next session)
-2. Update Last updated: date in any files that were modified.
-3. If new kanji were confirmed known mid-session, ensure Known_Kanji.md reflects this.
-4. If User_Profile.md needs updating (new goals, pace observations, etc.), update it.
-5. If homework was assigned this session, note it in the session log entry.
+7. Update Last updated: date in any files that were modified.
 
 ---
 
