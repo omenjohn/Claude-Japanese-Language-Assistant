@@ -138,3 +138,32 @@ NOTE: An Electron app exists at D:\Claude\Japanese Language Assistant\app\ which
     5. true  / [date] / 2-4     — completed, mid confidence
     6. true  / [date] / 5       — completed, highest confidence
   The 九 entry (confidence: 3, completed: false) is a dev artifact; treat confidence as null.
+
+---
+
+[2026-05-02] Migration to GitHub
+
+MIGRATED: All environment files moved from local filesystem to public GitHub repository.
+  Repo: omenjohn/Claude-Japanese-Language-Assistant
+  Visibility: public (required for Claude's web_fetch tool to read raw content without auth)
+
+MODIFIED: BOOTSTRAP.md
+  - Added ENVIRONMENT section with read/write instructions for GitHub API
+  - Reads: raw.githubusercontent.com (no auth required)
+  - Writes: GitHub Contents API via PAT in system prompt
+  - Added note that writes must go through the GitHub File Writer artifact
+  - Updated Step 5 to reflect that file updates are provided as content for user to push
+  - Removed references to local filesystem paths
+
+CREATED: github_writer.html (not in repo — lives locally or as a Claude artifact)
+  - Browser-based tool for pushing file updates to GitHub
+  - Accepts PAT, file path, and content; handles SHA fetch and PUT automatically
+  - Used at end of each session to commit changes Claude cannot write directly
+
+NOTE: Claude's web_fetch tool cannot attach Authorization headers, so direct API writes
+  are not possible from Claude. The artifact workaround is the current solution.
+  If Anthropic adds header support to web_fetch in future, direct writes become possible.
+
+NOTE: The Electron 書道 app (D:\Claude\Japanese Language Assistant\app\) still reads/writes
+  homework\shodo.json locally. That file is not yet synced to GitHub automatically.
+  Manual sync required when shodo.json changes via the app.
